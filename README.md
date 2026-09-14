@@ -2,7 +2,7 @@
 ###Descripción.
 La API de Gestión de Inventario es un servicio backend diseñado para administrar de manera eficiente el flujo de productos, el catálogo de inventario, proveedores y usuarios dentro de una organización. Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los recursos principales y ofrece un sistema de auditoría y trazabilidad mediante el registro de movimientos de entrada y salida de mercancía.
 
-###Intengrantes.
+### Intengrantes.
 - Katherine Jeanmillette Santos Sermeño
 - Audiel Isaac Terán Morales
 - Denilson Alfredo Vega Granadino
