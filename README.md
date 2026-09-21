@@ -60,4 +60,4 @@ La API de Gestión de Inventario es un servicio backend diseñado para administr
 ![](docs/Casos%20de%20Uso/diagrama_casos_uso2.png)
 
 ### Clases
-![](docs/Diagrama de Clases UML/Diagrama de clases.jpeg).
+![](docs/Diagrama%20de%20Clases%20UML/Diagrama%20de%20clases.jpeg).
