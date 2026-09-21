@@ -12,3 +12,43 @@ La API de Gestión de Inventario es un servicio backend diseñado para administr
 ### Actores del Sistema
  - Administrador (ADMIN): Usuario con acceso total al sistema. Encargado de la gestión de usuarios, proveedores, categorías y catálogo de productos, además de registrar y consultar movimientos e historial de stock.
  - Operador (OPERADOR): Usuario enfocado en la operativa diaria. Registra entradas/salidas de inventario y realiza consultas sobre productos, stock e historial de movimientos. No cuenta con permisos para crear, editar o eliminar entidades base del sistema (usuarios, proveedores, categorías o productos).
+
+### Estructura del proyecto 
+.
+├── .mvn/
+│   └── wrapper/
+│       └── maven-wrapper.properties
+├── docs/
+│   ├── Casos de Uso/
+│   │   └── .gitkeep
+│   ├── Diagrama Entidad-Relación/
+│   │   ├── .gitkeep
+│   │   └── ER-gestion-inventario.png
+│   └── Diagrama de Clases UML/
+│       └── codigo_diagramaUML.puml
+├── src/
+│   ├── main/
+│   │   ├── java/com/grupo7/GestionInventarioApi/
+│   │   │   ├── controller/
+│   │   │   ├── dto/
+│   │   │   │   ├── request/
+│   │   │   │   └── response/
+│   │   │   ├── exception/
+│   │   │   ├── mapper/
+│   │   │   ├── model/
+│   │   │   │   ├── enums/
+│   │   │   │   └── .gitkeep
+│   │   │   ├── repository/
+│   │   │   ├── service/
+│   │   │   └── GestionInventarioApiApplication.java
+│   │   └── resources/
+│   │       ├── db/migration/
+│   │       └── application.properties
+│   └── test/java/com/grupo7/GestionInventarioApi/
+│       └── GestionInventarioApiApplicationTests.java
+├── .gitattributes
+├── .gitignore
+├── README.md
+├── mvnw
+├── mvnw.cmd
+└── pom.xml
