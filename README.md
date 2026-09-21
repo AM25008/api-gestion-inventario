@@ -14,7 +14,8 @@ La API de Gestión de Inventario es un servicio backend diseñado para administr
  - Operador (OPERADOR): Usuario enfocado en la operativa diaria. Registra entradas/salidas de inventario y realiza consultas sobre productos, stock e historial de movimientos. No cuenta con permisos para crear, editar o eliminar entidades base del sistema (usuarios, proveedores, categorías o productos).
 
 ### Estructura del proyecto 
-.
+
+'''.
 ├── .mvn/
 │   └── wrapper/
 │       └── maven-wrapper.properties
@@ -51,4 +52,4 @@ La API de Gestión de Inventario es un servicio backend diseñado para administr
 ├── README.md
 ├── mvnw
 ├── mvnw.cmd
-└── pom.xml
+└── pom.xml '''
