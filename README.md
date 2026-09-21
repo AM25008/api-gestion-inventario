@@ -15,7 +15,8 @@ La API de Gestión de Inventario es un servicio backend diseñado para administr
 
 ### Estructura del proyecto 
 
-'''.
+```
+.
 ├── .mvn/
 │   └── wrapper/
 │       └── maven-wrapper.properties
@@ -52,4 +53,5 @@ La API de Gestión de Inventario es un servicio backend diseñado para administr
 ├── README.md
 ├── mvnw
 ├── mvnw.cmd
-└── pom.xml '''
+└── pom.xml
+```
