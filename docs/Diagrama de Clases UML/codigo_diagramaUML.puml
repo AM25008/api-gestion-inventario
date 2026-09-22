@@ -1,0 +1,113 @@
+@startuml
+skinparam linetype ortho
+title Diagrama de Clases UML - Sistema de Gestión de Inventario
+
+class Producto {
+  -idProducto: Long
+  -nombreProducto: String
+  -precio: BigDecimal
+  -descripcion: String
+  -stockActual: Integer
+  -activo: Boolean
+  -stockMinimo: Integer
+  --
+  +crearProducto(Producto): Producto
+  +obtenerProductos(): List<Producto>
+  +obtenerProductoPorId(Long): Producto
+  +obtenerProductosPorCategoria(Long): List<Producto>
+  +actualizarProducto(Long, Producto): Producto
+  +eliminarProducto(Long): void
+  +consultarStockBajo(): List<Producto>
+}
+
+class Categoria {
+  -idCategoria: Long
+  -nombreCategoria: String
+  -descripcion: String
+  -activa: Boolean
+  --
+  +crearCategoria(Categoria): Categoria
+  +obtenerCategorias(): List<Categoria>
+  +obtenerCategoriaPorId(Long): Categoria
+  +actualizarCategoria(Long, Categoria): Categoria
+  +eliminarCategoria(Long): void
+}
+
+class Proveedor {
+  -idProveedor: Long
+  -nombreProveedor: String
+  -correo: String
+  -telefono: String
+  -descripcion: String
+  -direccion: String
+  -activo: Boolean
+  --
+  +crearProveedor(Proveedor): Proveedor
+  +obtenerProveedores(): List<Proveedor>
+  +obtenerProveedorPorId(Long): Proveedor
+  +actualizarProveedor(Long, Proveedor): Proveedor
+  +eliminarProveedor(Long): void
+}
+
+class ProductoProveedor {
+  -idProductoProveedor: Long
+  -precioCompra: BigDecimal
+  --
+  +asociarProveedor(ProductoProveedor): ProductoProveedor
+  +obtenerAsociaciones(): List<ProductoProveedor>
+  +obtenerProductosPorProveedor(Long): List<ProductoProveedor>
+  +obtenerProveedoresPorProducto(Long): List<ProductoProveedor>
+  +obtenerAsociacionPorId(Long): ProductoProveedor
+  +actualizarAsociacion(Long, ProductoProveedor): ProductoProveedor
+  +eliminarAsociacion(Long): void
+}
+
+class Usuario {
+  -idUsuario: Long
+  -nombreUsuario: String
+  -apellidoUsuario: String
+  -rol: RolUsuario
+  -activo: Boolean
+  --
+  +crearUsuario(Usuario): Usuario
+  +obtenerUsuarios(): List<Usuario>
+  +obtenerUsuarioPorId(Long): Usuario
+  +actualizarUsuario(Long, Usuario): Usuario
+  +eliminarUsuario(Long): void
+}
+
+enum RolUsuario <<ennumeration>> {
+  ADMIN
+  OPERADOR
+}
+
+class MovimientoInventario {
+  -idMovimiento: Long
+  -tipoMovimiento: TipoMovimiento
+  -fecha: LocalDateTime
+  -cantidad: Integer
+  -motivo: String
+  --
+  +registrarMovimiento(MovimientoInventario): MovimientoInventario
+  +obtenerMovimientos(): List<MovimientoInventario>
+  +obtenerMovimientoPorId(Long): MovimientoInventario
+  +obtenerMovimientosPorProducto(Long): List<MovimientoInventario>
+  +obtenerMovimientosPorUsuario(Long): List<MovimientoInventario>
+  +obtenerMovimientosPorTipo(TipoMovimiento): List<MovimientoInventario>
+}
+
+enum TipoMovimiento <<ennumeration>> {
+  ENTRADA
+  SALIDA
+}
+
+' Relaciones
+Usuario ..> RolUsuario
+MovimientoInventario ..> TipoMovimiento
+
+Usuario "1" --> "0..*" MovimientoInventario : realiza
+Producto "1" --> "0..*" MovimientoInventario : genera
+Categoria "1" --> "0..*" Producto : clasifica
+Proveedor "1" --> "0..*" ProductoProveedor : ofrece
+Producto "1" --> "0..*" ProductoProveedor : ofrecido_en
+@enduml

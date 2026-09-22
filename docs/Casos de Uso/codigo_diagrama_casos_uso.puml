@@ -1,0 +1,90 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+package "Gestión de Categorías" {
+  usecase "Crear Categoría" as UC1
+  usecase "Consultar Categorías" as UC2
+  usecase "Actualizar Categoría" as UC3
+  usecase "Eliminar Categoría" as UC4
+}
+
+package "Gestión de Proveedores" {
+  usecase "Crear Proveedor" as UC5
+  usecase "Consultar Proveedores" as UC6
+  usecase "Actualizar Proveedor" as UC7
+  usecase "Eliminar Proveedor" as UC8
+}
+
+package "Gestión de Usuarios" {
+  usecase "Crear Usuario" as UC14
+  usecase "Consultar Usuarios" as UC15
+  usecase "Actualizar Usuario" as UC16
+  usecase "Desactivar Usuario" as UC17
+}
+
+package "Gestión Producto-Proveedor" {
+  usecase "Asociar Producto-Proveedor" as UC22
+  usecase "Consultar Asociaciones" as UC23
+  usecase "Actualizar Asociación" as UC24
+  usecase "Eliminar Asociación" as UC25
+}
+
+actor Administrador
+actor Operador
+
+package "Gestión de Productos" {
+  usecase "Crear Producto" as UC9
+  usecase "Consultar Productos" as UC10
+  usecase "Actualizar Producto" as UC11
+  usecase "Eliminar Producto" as UC12
+}
+
+package "Gestión de Movimientos" {
+  usecase "Registrar Movimiento" as UC18
+  usecase "Consultar Historial de Movimientos" as UC19
+}
+
+package "Consultas de Stock" {
+  usecase "Consultar Stock Disponible" as UC20
+  usecase "Consultar Stock Bajo" as UC21
+}
+
+Administrador --> UC1
+Administrador --> UC2
+Administrador --> UC3
+Administrador --> UC4
+Administrador --> UC5
+Administrador --> UC6
+Administrador --> UC7
+Administrador --> UC8
+Administrador --> UC14
+Administrador --> UC15
+Administrador --> UC16
+Administrador --> UC17
+Administrador --> UC22
+Administrador --> UC23
+Administrador --> UC24
+Administrador --> UC25
+Administrador --> UC9
+Administrador --> UC10
+Administrador --> UC11
+Administrador --> UC12
+Administrador --> UC18
+Administrador --> UC19
+Administrador --> UC20
+Administrador --> UC21
+
+Operador --> UC2
+Operador --> UC6
+Operador --> UC22
+Operador --> UC23
+Operador --> UC24
+Operador --> UC9
+Operador --> UC10
+Operador --> UC11
+Operador --> UC18
+Operador --> UC19
+Operador --> UC20
+Operador --> UC21
+@enduml
