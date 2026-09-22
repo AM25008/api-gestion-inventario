@@ -82,4 +82,4 @@ El sistema estructura el dominio del negocio mediante seis entidades principales
 ![](docs/Diagrama%20de%20Clases%20UML/Diagrama%20de%20clases.jpeg)
 
 ### Entidad-Relación
-![](docs/Diagrama%20Entidad-Relación/ER-gestion-inventario.png)
+![](docs/Diagrama%20Entidad-Relación/gestion_inventario_ER.png)
