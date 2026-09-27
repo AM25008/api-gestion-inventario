@@ -23,7 +23,7 @@ El sistema estructura el dominio del negocio mediante seis entidades principales
 - Usuarios.
 
 ## Diagrama Entidad-Relación
-![](docs/gestion_inventario_ER_versionFinal.png)
+![](docs/Diagrama%Entidad-Relación/gestion_inventario_ER_versionFinal.png)
 
 - **Productos** → Almacena cada artículo del inventario(`nombre`, `descripción`, `precio`, `stock`) y se conecta con **Categorías** y **Proveedores**.
 
