@@ -26,4 +26,16 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
+    @ExceptionHandler(RecursoDuplicadoException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRecursoDuplicado(RecursoDuplicadoException ex){
+        ErrorResponseDTO error = ErrorResponseDTO.builder()
+                .error("Error de negocio")
+                .mensaje(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.CONFLICT.value())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
 }
