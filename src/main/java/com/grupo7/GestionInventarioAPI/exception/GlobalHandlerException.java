@@ -79,4 +79,16 @@ public class GlobalHandlerException {
                 .body(error);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception ex){
+        ErrorResponseDTO error = ErrorResponseDTO.builder()
+                .error("Error interno del servidor")
+                .mensaje("Ocurrio un error inesperado")
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
 }
