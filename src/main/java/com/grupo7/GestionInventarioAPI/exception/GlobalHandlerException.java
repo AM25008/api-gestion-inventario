@@ -38,4 +38,16 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRecursoNoEncontrado(RecursoNoEncontradoException ex){
+        ErrorResponseDTO error = ErrorResponseDTO.builder()
+                .error("Error de negocio")
+                .mensaje(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
 }
