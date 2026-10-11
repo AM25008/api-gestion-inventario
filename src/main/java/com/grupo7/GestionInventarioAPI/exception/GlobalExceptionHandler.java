@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestControllerAdvice
-public class GlobalHandlerException {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccesoNoAutorizadoException.class)
     public ResponseEntity<ErrorResponseDTO> handleAccesoNoAutorizado(AccesoNoAutorizadoException ex){
