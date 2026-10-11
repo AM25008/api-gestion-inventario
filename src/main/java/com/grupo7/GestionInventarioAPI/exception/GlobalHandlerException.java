@@ -1,0 +1,29 @@
+package com.grupo7.GestionInventarioAPI.exception;
+
+import com.grupo7.GestionInventarioAPI.dto.response.error.ErrorResponseDTO;
+import com.grupo7.GestionInventarioAPI.dto.response.error.ValidationErrorResponseDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@RestControllerAdvice
+public class GlobalHandlerException {
+
+    @ExceptionHandler(AccesoNoAutorizadoException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccesoNoAutorizado(AccesoNoAutorizadoException ex){
+        ErrorResponseDTO error = ErrorResponseDTO.builder()
+                .error("No autorizado")
+                .mensaje(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.FORBIDDEN.value())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+}
