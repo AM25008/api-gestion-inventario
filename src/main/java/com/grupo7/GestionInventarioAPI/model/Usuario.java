@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,10 +25,10 @@ public class Usuario {
     private String apellidoUsuario;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "rol_usuario", nullable = false, length = 20)
+    @Column(name = "rol", nullable = false, length = 20)
     private RolUsuario rolUsuario;
 
     @Builder.Default
-    @Column(name = "activa", nullable = false)
+    @Column(name = "activo", nullable = false)
     private boolean activa = true;
 }
