@@ -50,4 +50,17 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(StockInsuficienteException.class)
+    public ResponseEntity<ErrorResponseDTO> handleStockInsuficienteException(StockInsuficienteException ex){
+        ErrorResponseDTO error = ErrorResponseDTO.builder()
+                .error("Error de negocio")
+                .mensaje(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
 }
