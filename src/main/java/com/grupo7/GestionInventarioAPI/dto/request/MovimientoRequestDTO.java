@@ -15,11 +15,11 @@ public class MovimientoRequestDTO {
 
     @NotNull(message = "El producto es obligatorio")
     @Positive(message = "El id del producto debe ser positivo")
-    private Long idProducto;
+    private Integer idProducto;
 
     @NotNull(message = "El usuario es obligatorio")
     @Positive(message = "El id del usuario debe ser positivo")
-    private Long idUsuario;
+    private Integer idUsuario;
 
     @NotNull(message = "El tipo de movimiento es obligatorio")
     private TipoMovimiento tipoMovimiento;

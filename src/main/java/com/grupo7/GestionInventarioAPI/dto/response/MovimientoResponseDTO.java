@@ -1,26 +1,20 @@
 package com.grupo7.GestionInventarioAPI.dto.response;
 
 import com.grupo7.GestionInventarioAPI.model.enums.TipoMovimiento;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
-@NoArgsConstructor
+@Builder
 public class MovimientoResponseDTO {
 
-    private Long idMovimiento;
+    private Integer idMovimiento;
 
-    private Long producto;
+    private String producto;
 
-    private Long usuario;
+    private String usuario;
 
     private TipoMovimiento tipoMovimiento;
 
