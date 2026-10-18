@@ -1,0 +1,1 @@
+ALTER TABLE movimientos DROP COLUMN IF EXISTS precio_unitario;
