@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MovimientoRepository extends JpaRepository<MovimientoInventario, Integer> {
+public interface MovimientoInventarioRepository extends JpaRepository<MovimientoInventario, Integer> {
 
     List<MovimientoInventario> findByProducto_IdProducto(Integer idProducto);
 

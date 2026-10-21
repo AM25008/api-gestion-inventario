@@ -30,5 +30,5 @@ public class Usuario {
 
     @Builder.Default
     @Column(name = "activo", nullable = false)
-    private boolean activa = true;
+    private boolean activo = true;
 }
