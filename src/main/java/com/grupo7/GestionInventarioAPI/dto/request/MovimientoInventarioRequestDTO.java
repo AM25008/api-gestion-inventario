@@ -11,15 +11,11 @@ import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
-public class MovimientoRequestDTO {
+public class MovimientoInventarioRequestDTO {
 
     @NotNull(message = "El producto es obligatorio")
     @Positive(message = "El id del producto debe ser positivo")
     private Integer idProducto;
-
-    @NotNull(message = "El usuario es obligatorio")
-    @Positive(message = "El id del usuario debe ser positivo")
-    private Integer idUsuario;
 
     @NotNull(message = "El tipo de movimiento es obligatorio")
     private TipoMovimiento tipoMovimiento;

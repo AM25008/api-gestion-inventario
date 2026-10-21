@@ -1,19 +1,19 @@
 package com.grupo7.GestionInventarioAPI.mapper;
 
-import com.grupo7.GestionInventarioAPI.dto.response.MovimientoResponseDTO;
+import com.grupo7.GestionInventarioAPI.dto.response.MovimientoInventarioResponseDTO;
 import com.grupo7.GestionInventarioAPI.model.MovimientoInventario;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MovimientoMapper {
+public class MovimientoInventarioMapper {
 
-    public MovimientoResponseDTO toDTO(MovimientoInventario mov){
+    public MovimientoInventarioResponseDTO toDTO(MovimientoInventario mov){
         if(mov == null) return null;
 
-        return MovimientoResponseDTO.builder()
+        return MovimientoInventarioResponseDTO.builder()
                 .idMovimiento(mov.getIdMovimiento())
                 .producto(mov.getProducto().getNombreProducto())
-                .usuario(mov.getUsuario().getNombreUsuario())
+                .usuario(mov.getUsuario().getNombreUsuario() + " " + mov.getUsuario().getApellidoUsuario())
                 .tipoMovimiento(mov.getTipoMovimiento())
                 .fechaHora(mov.getFechaHora())
                 .cantidad(mov.getCantidad())
