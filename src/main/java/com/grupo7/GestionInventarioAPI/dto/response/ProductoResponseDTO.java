@@ -1,4 +1,4 @@
-package com.grupo7.GestionInventarioAPI.dto.request;
+package com.grupo7.GestionInventarioAPI.dto.response;
 
 import com.grupo7.GestionInventarioAPI.model.enums.NivelStock;
 import lombok.*;
