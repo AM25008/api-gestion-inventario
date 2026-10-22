@@ -1,0 +1,4 @@
+package com.grupo7.GestionInventarioAPI.model;
+
+public class MovimientoInventario {
+}
