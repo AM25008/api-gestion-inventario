@@ -5,5 +5,4 @@ public enum NivelStock {
     BAJO, //cuando stockActual <= stockMinimo
     NORMAL, // cuando stockActual > stockMinimo
     ALTO // cuando stockActual > stockMinimo*2
-
 }
