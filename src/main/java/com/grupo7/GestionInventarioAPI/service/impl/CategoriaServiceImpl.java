@@ -1,4 +1,4 @@
-package com.grupo7.GestionInventarioAPI.service;
+package com.grupo7.GestionInventarioAPI.service.impl;
 
 import com.grupo7.GestionInventarioAPI.dto.request.CategoriaRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.CategoriaUpdateDTO;
@@ -12,6 +12,8 @@ import com.grupo7.GestionInventarioAPI.model.Usuario;
 import com.grupo7.GestionInventarioAPI.model.enums.RolUsuario;
 import com.grupo7.GestionInventarioAPI.repository.CategoriaRepository;
 import com.grupo7.GestionInventarioAPI.repository.UsuarioRepository;
+import com.grupo7.GestionInventarioAPI.service.CategoriaService;
+import com.grupo7.GestionInventarioAPI.service.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,19 +26,8 @@ import java.util.stream.Collectors;
 public class CategoriaServiceImpl implements CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
-    private final UsuarioRepository usuarioRepository;
     private final CategoriaMapper categoriaMapper;
-
-    // Lógica centralizada de validación 
-    private void validarRolAdministrador(Integer usuarioId) {
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndActivoTrue(usuarioId)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado o inactivo con ID: " + usuarioId));
-        
-        // Comparación directa contra el Enum oficial RolUsuario
-        if (usuario.getRolUsuario() != RolUsuario.ADMIN) {
-            throw new AccesoNoAutorizadoException("El usuario con ID " + usuarioId + " no tiene permisos de ADMINISTRADOR para realizar esta acción.");
-        }
-    }
+    private final Helper helper;
 
     @Override
     @Transactional(readOnly = true)
@@ -57,7 +48,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     @Transactional
     public CategoriaResponseDTO crear(CategoriaRequestDTO dto, Integer usuarioId) {
-        validarRolAdministrador(usuarioId);
+        helper.exigirAdmin(usuarioId);
 
         if (categoriaRepository.existsByNombreCategoriaAndActivaTrue(dto.getNombreCategoria())) {
             throw new RecursoDuplicadoException("Ya existe una categoría activa con el nombre: " + dto.getNombreCategoria());
@@ -71,7 +62,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     @Transactional
     public CategoriaResponseDTO actualizar(Integer id, CategoriaUpdateDTO dto, Integer usuarioId) {
-        validarRolAdministrador(usuarioId);
+        helper.exigirAdmin(usuarioId);
 
         Categoria categoriaExistente = categoriaRepository.findByIdCategoriaAndActivaTrue(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Categoría no encontrada para actualizar con ID: " + id));
@@ -94,7 +85,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     @Transactional
     public void eliminarLogico(Integer id, Integer usuarioId) {
-        validarRolAdministrador(usuarioId);
+        helper.exigirAdmin(usuarioId);
 
         Categoria categoria = categoriaRepository.findByIdCategoriaAndActivaTrue(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Categoría no encontrada para eliminar con ID: " + id));

@@ -3,7 +3,7 @@ package com.grupo7.GestionInventarioAPI.controller;
 import com.grupo7.GestionInventarioAPI.dto.request.CategoriaRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.CategoriaUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.CategoriaResponseDTO;
-import com.grupo7.GestionInventarioAPI.service.CategoriaService;
+import com.grupo7.GestionInventarioAPI.service.impl.CategoriaServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoriaController {
 
-    private final CategoriaService categoriaService;
+    private final CategoriaServiceImpl categoriaService;
 
     @GetMapping
     public ResponseEntity<List<CategoriaResponseDTO>> listarCategorias() {
@@ -32,9 +32,9 @@ public class CategoriaController {
     @PostMapping
     public ResponseEntity<CategoriaResponseDTO> crearCategoria(
             @Valid @RequestBody CategoriaRequestDTO dto,
-            @RequestParam Integer usuarioId) {
+            @RequestParam Integer user) {
         
-        CategoriaResponseDTO creada = categoriaService.crear(dto, usuarioId);
+        CategoriaResponseDTO creada = categoriaService.crear(dto, user);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 
@@ -42,18 +42,18 @@ public class CategoriaController {
     public ResponseEntity<CategoriaResponseDTO> actualizarCategoria(
             @PathVariable Integer id,
             @Valid @RequestBody CategoriaUpdateDTO dto,
-            @RequestParam Integer usuarioId) {
+            @RequestParam Integer user) {
         
-        CategoriaResponseDTO actualizada = categoriaService.actualizar(id, dto, usuarioId);
+        CategoriaResponseDTO actualizada = categoriaService.actualizar(id, dto, user);
         return ResponseEntity.ok(actualizada);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCategoria(
             @PathVariable Integer id,
-            @RequestParam Integer usuarioId) {
+            @RequestParam Integer user) {
         
-        categoriaService.eliminarLogico(id, usuarioId);
+        categoriaService.eliminarLogico(id, user);
         return ResponseEntity.noContent().build();
     }
 }
