@@ -19,8 +19,10 @@ public class ProveedorRequestDTO {
     private String correo;
 
     @NotBlank(message = "El teléfono es obligatorio")
+    @Size(max = 9, message = "El telefono no puede exceder los 9 caracteres")
     private String telefono;
 
     @NotBlank(message = "La dirección es obligatoria")
+    @Size(max = 150, message = "La dirección no puede superar los 150 caracteres")
     private String direccion;
 }
