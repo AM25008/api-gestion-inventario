@@ -3,6 +3,7 @@ package com.grupo7.GestionInventarioAPI.mapper;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProductoResponseDTO;
+import com.grupo7.GestionInventarioAPI.model.Categoria;
 import com.grupo7.GestionInventarioAPI.model.Producto;
 import com.grupo7.GestionInventarioAPI.model.enums.NivelStock;
 import org.springframework.stereotype.Component;
@@ -11,16 +12,27 @@ import org.springframework.stereotype.Component;
 
 public class ProductoMapper {
 
-    public Producto toEntity(ProductoRequestDTO dto){
+    // en el service solo buscas la categoria y se la pasas en este metodo
+    public Producto toEntity(ProductoRequestDTO dto, Categoria categoria){
         if(dto == null) return null;
 
-        return Producto.builder()
+        Producto producto = Producto.builder()
                 .nombreProducto(dto.getNombreProducto())
                 .descripcion(dto.getDescripcion())
                 .precio(dto.getPrecio())
-                .stockActual(dto.getStock())
-                .stockMinimo(dto.getStockMinimo())
+                .categoria(categoria)
                 .build();
+
+        // los stocks no son obligatorios pero si se dejan en el builder de arriba
+        // y no se mandan, quedan como null y la base de datos va a tirar error
+        // por el NOT NULL (si no se mandan tienen los valores por defecto)
+        if(dto.getStock() != null){
+            producto.setStockActual(dto.getStock());
+        }
+        if(dto.getStockMinimo() != null){
+            producto.setStockMinimo(dto.getStockMinimo());
+        }
+        return producto;
     }
 
     public ProductoResponseDTO toDTO(Producto entity){
