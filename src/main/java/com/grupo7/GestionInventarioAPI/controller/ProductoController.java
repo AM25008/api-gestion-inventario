@@ -35,12 +35,11 @@ public class ProductoController {
         }
     }
     //GET /api/productos (ADMIN y OPERADOR)
+    // pienso que hay que dejarlo libre, es decir en los de consulta no validamos usuario, solo en los de eliminar (en esta entidad)
     @GetMapping
     public ResponseEntity<List<ProductoResponseDTO>> listar(
-            @RequestParam(required = false) Integer idCategoria,
-            @RequestHeader(value = "Rol-Usuario", required = false) String rolUsuario
+            @RequestParam(required = false) Integer idCategoria
     ){
-        validarRol(rolUsuario, false);
         return ResponseEntity.ok(productoService.listarActivos());
     }
 
@@ -89,10 +88,9 @@ public class ProductoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(
             @PathVariable Integer id,
-            @RequestHeader(value = "Rol-Usuario", required = false) String rolUsuario
+            @RequestParam Integer user
     ){
-        validarRol(rolUsuario, true);
-        productoService.eliminar(id);
+        productoService.eliminar(id, user);
         return ResponseEntity.noContent().build();
     }
 }

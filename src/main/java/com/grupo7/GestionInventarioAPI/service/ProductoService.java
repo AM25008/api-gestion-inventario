@@ -16,7 +16,8 @@ public interface ProductoService {
 
     ProductoResponseDTO actualizar(Integer id, ProductoUpdateDTO dto);
 
-    void eliminar(Integer id);
+    // recibe id de usuario y lo valida en la impl
+    void eliminar(Integer idProducto, Integer idUsuario);
 
     List<ProductoResponseDTO> consultarStockBajo();
 }

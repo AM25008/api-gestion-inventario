@@ -7,8 +7,10 @@ import com.grupo7.GestionInventarioAPI.exception.RecursoNoEncontradoException;
 import com.grupo7.GestionInventarioAPI.mapper.ProductoMapper;
 import com.grupo7.GestionInventarioAPI.model.Categoria;
 import com.grupo7.GestionInventarioAPI.model.Producto;
+import com.grupo7.GestionInventarioAPI.model.Usuario;
 import com.grupo7.GestionInventarioAPI.repository.CategoriaRepository;
 import com.grupo7.GestionInventarioAPI.repository.ProductoRepository;
+import com.grupo7.GestionInventarioAPI.service.Helper;
 import com.grupo7.GestionInventarioAPI.service.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class ProductoServiceImpl implements ProductoService {
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
     private final ProductoMapper productoMapper;
+    private final Helper helper;
 
     @Override
     @Transactional(readOnly = true)
@@ -58,8 +61,7 @@ public class ProductoServiceImpl implements ProductoService {
             throw new RecursoDuplicadoException("Ya existe un producto con el nombre: " + dto.getNombreProducto());
         }
 
-        Producto producto = productoMapper.toEntity(dto);
-        producto.setCategoria(categoria);
+        Producto producto = productoMapper.toEntity(dto, categoria);
         producto.setActivo(true);
 
         Producto guardado = productoRepository.save(producto);
@@ -87,11 +89,14 @@ public class ProductoServiceImpl implements ProductoService {
         return productoMapper.toDTO(actualizado);
     }
 
+    // aqui recibe el usuario y lo valida con el helper
     @Override
     @Transactional
-    public void eliminar(Integer id) {
+    public void eliminar(Integer id, Integer idUser) {
         Producto producto = productoRepository.findByIdProductoAndActivoTrue(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado o inactivo con ID: " + id));
+
+        Usuario usuario = helper.exigirAdmin(idUser);
 
         producto.setActivo(false);
         productoRepository.save(producto);
