@@ -19,58 +19,41 @@ public class CategoriaController {
 
     private final CategoriaService categoriaService;
 
-    // GET /api/categorias - Acceso: ADMIN y OPERADOR
     @GetMapping
     public ResponseEntity<List<CategoriaResponseDTO>> listarCategorias() {
         return ResponseEntity.ok(categoriaService.listarActivas());
     }
 
-    // GET /api/categorias/{id} - Acceso: ADMIN y OPERADOR
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaResponseDTO> obtenerCategoriaPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(categoriaService.obtenerPorId(id));
     }
 
-    // POST /api/categorias - Acceso: solo ADMIN
     @PostMapping
-    public ResponseEntity<?> crearCategoria(
+    public ResponseEntity<CategoriaResponseDTO> crearCategoria(
             @Valid @RequestBody CategoriaRequestDTO dto,
-            @RequestHeader(value = "X-User-Role", defaultValue = "OPERADOR") String rol) {
+            @RequestParam Integer usuarioId) {
         
-        if (!"ADMIN".equalsIgnoreCase(rol)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error 403: El rol OPERADOR no tiene permisos para crear categorías.");
-        }
-        
-        CategoriaResponseDTO creada = categoriaService.crear(dto);
+        CategoriaResponseDTO creada = categoriaService.crear(dto, usuarioId);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 
-    // PUT /api/categorias/{id} - Acceso: solo ADMIN
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarCategoria(
+    public ResponseEntity<CategoriaResponseDTO> actualizarCategoria(
             @PathVariable Integer id,
             @Valid @RequestBody CategoriaUpdateDTO dto,
-            @RequestHeader(value = "X-User-Role", defaultValue = "OPERADOR") String rol) {
+            @RequestParam Integer usuarioId) {
         
-        if (!"ADMIN".equalsIgnoreCase(rol)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error 403: El rol OPERADOR no tiene permisos para modificar categorías.");
-        }
-        
-        CategoriaResponseDTO actualizada = categoriaService.actualizar(id, dto);
+        CategoriaResponseDTO actualizada = categoriaService.actualizar(id, dto, usuarioId);
         return ResponseEntity.ok(actualizada);
     }
 
-    // DELETE /api/categorias/{id} - Acceso: solo ADMIN
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCategoria(
+    public ResponseEntity<Void> eliminarCategoria(
             @PathVariable Integer id,
-            @RequestHeader(value = "X-User-Role", defaultValue = "OPERADOR") String rol) {
+            @RequestParam Integer usuarioId) {
         
-        if (!"ADMIN".equalsIgnoreCase(rol)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error 403: El rol OPERADOR no tiene permisos para eliminar categorías.");
-        }
-        
-        categoriaService.eliminarLogico(id);
+        categoriaService.eliminarLogico(id, usuarioId);
         return ResponseEntity.noContent().build();
     }
 }
