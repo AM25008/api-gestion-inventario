@@ -12,6 +12,7 @@ import com.grupo7.GestionInventarioAPI.model.enums.TipoMovimiento;
 import com.grupo7.GestionInventarioAPI.repository.MovimientoInventarioRepository;
 import com.grupo7.GestionInventarioAPI.repository.ProductoRepository;
 import com.grupo7.GestionInventarioAPI.repository.UsuarioRepository;
+import com.grupo7.GestionInventarioAPI.service.Helper;
 import com.grupo7.GestionInventarioAPI.service.MovimientoInventarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class MovimientoInventarioServiceImpl implements MovimientoInventarioServ
     private final MovimientoInventarioMapper mapper;
     private final ProductoRepository productoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final Helper helper;
 
     @Override
     @Transactional(readOnly = true)
@@ -55,8 +57,7 @@ public class MovimientoInventarioServiceImpl implements MovimientoInventarioServ
                 .orElseThrow(() -> new RecursoNoEncontradoException("Producto con id " + dto.getIdProducto() + " no encontrado"));
 
         // Validar que el usuario exista
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndActivoTrue(idUsuario)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario con id " + idUsuario + " no encontrado"));
+        Usuario usuario = helper.obtenerUsuarioActivo(idUsuario);
 
         // operaciones
         if(dto.getTipoMovimiento() == TipoMovimiento.ENTRADA){

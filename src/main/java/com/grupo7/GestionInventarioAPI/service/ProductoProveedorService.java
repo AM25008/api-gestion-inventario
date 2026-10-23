@@ -14,9 +14,9 @@ public interface ProductoProveedorService {
 
     ProductoProveedorResponseDTO crearProductoProveedor(ProductoProveedorRequestDTO dto);
 
-    ProductoProveedorResponseDTO obtenerProductosPorProveedor(Integer idProveedor);
+    List<ProductoProveedorResponseDTO> obtenerProductosPorProveedor(Integer idProveedor);
 
-    ProductoProveedorResponseDTO obtenerProveedoresPorProducto(Integer idProducto);
+    List<ProductoProveedorResponseDTO> obtenerProveedoresPorProducto(Integer idProducto);
 
     ProductoProveedorResponseDTO actualizar(Integer idProductoProveedor, ProductoProveedorUpdateDTO dto);
 
