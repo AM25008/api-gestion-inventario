@@ -15,7 +15,9 @@ public class ProveedorUpdateDTO {
     @Email(message = "El correo debe tener un formato válido")
     private String correo;
 
+    @Size(max = 9, message = "El telefono no puede exceder los 9 caracteres")
     private String telefono;
 
+    @Size(max = 150, message = "La dirección no puede superar los 150 caracteres")
     private String direccion;
 }
