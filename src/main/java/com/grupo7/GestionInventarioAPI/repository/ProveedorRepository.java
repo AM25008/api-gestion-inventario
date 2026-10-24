@@ -13,4 +13,6 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     Optional<Proveedor> findByIdProveedorAndActivoTrue(Integer idProveedor);
 
     boolean existsByCorreo(String correo);
+
+    boolean existsByCorreoAndIdProveedorNot(String correo, Integer idProveedor);
 }
