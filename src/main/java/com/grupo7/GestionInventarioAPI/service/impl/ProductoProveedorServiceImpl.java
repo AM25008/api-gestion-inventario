@@ -59,6 +59,15 @@ public class ProductoProveedorServiceImpl implements ProductoProveedorService {
         Proveedor proveedor = proveedorRepository.findByIdProveedorAndActivoTrue(dto.getIdProveedor())
                 .orElseThrow(() -> new RecursoNoEncontradoException("No se encontro un proveedor con id " + dto.getIdProducto()));
 
+        // duplicados
+        if(repository.existsByProducto_IdProductoAndProveedor_IdProveedor(dto.getIdProducto(), dto.getIdProveedor())){
+            throw new RecursoDuplicadoException(
+                    "El producto con id " + dto.getIdProducto()
+                            + " ya está asociado al proveedor con id "
+                            + dto.getIdProveedor()
+            );
+        }
+
         ProductoProveedor productoProveedor = ProductoProveedor.builder()
                 .proveedor(proveedor)
                 .producto(producto)

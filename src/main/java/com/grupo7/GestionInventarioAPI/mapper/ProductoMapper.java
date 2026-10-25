@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 public class ProductoMapper {
 
-    // en el service solo buscas la categoria y se la pasas en este metodo
     public Producto toEntity(ProductoRequestDTO dto, Categoria categoria){
         if(dto == null) return null;
 
@@ -23,9 +22,6 @@ public class ProductoMapper {
                 .categoria(categoria)
                 .build();
 
-        // los stocks no son obligatorios pero si se dejan en el builder de arriba
-        // y no se mandan, quedan como null y la base de datos va a tirar error
-        // por el NOT NULL (si no se mandan tienen los valores por defecto)
         if(dto.getStock() != null){
             producto.setStockActual(dto.getStock());
         }
