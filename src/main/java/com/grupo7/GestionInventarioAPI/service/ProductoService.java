@@ -14,9 +14,8 @@ public interface ProductoService {
 
     ProductoResponseDTO crear(ProductoRequestDTO dto);
 
-    ProductoResponseDTO actualizar(Integer id, ProductoUpdateDTO dto);
+    ProductoResponseDTO actualizar(Integer idUsuario, ProductoUpdateDTO dto);
 
-    // recibe id de usuario y lo valida en la impl
     void eliminar(Integer idProducto, Integer idUsuario);
 
     List<ProductoResponseDTO> consultarStockBajo();

@@ -36,9 +36,9 @@ public class MovimientoInventarioController {
     }
 
     @PostMapping()
-    public ResponseEntity<MovimientoInventarioResponseDTO> registrarMovimiento(@RequestParam Integer idUser, @Valid @RequestBody MovimientoInventarioRequestDTO dto){
+    public ResponseEntity<MovimientoInventarioResponseDTO> registrarMovimiento(@RequestParam Integer user, @Valid @RequestBody MovimientoInventarioRequestDTO dto){
 
-        MovimientoInventarioResponseDTO nuevo = service.registrarMovimiento(idUser, dto);
+        MovimientoInventarioResponseDTO nuevo = service.registrarMovimiento(user, dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
