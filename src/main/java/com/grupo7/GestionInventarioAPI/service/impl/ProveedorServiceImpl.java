@@ -1,6 +1,7 @@
 package com.grupo7.GestionInventarioAPI.service.impl;
 
 import com.grupo7.GestionInventarioAPI.dto.request.ProveedorRequestDTO;
+import com.grupo7.GestionInventarioAPI.dto.request.ProveedorUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProveedorResponseDTO;
 import com.grupo7.GestionInventarioAPI.exception.RecursoDuplicadoException;
 import com.grupo7.GestionInventarioAPI.exception.RecursoNoEncontradoException;
@@ -70,7 +71,7 @@ public class ProveedorServiceImpl implements ProveedorService {
     @Transactional
     public ProveedorResponseDTO actualizar(
             Integer id,
-            ProveedorRequestDTO dto,
+            ProveedorUpdateDTO dto,
             Integer usuarioId
     ) {
         helper.exigirAdmin(usuarioId);
@@ -88,10 +89,21 @@ public class ProveedorServiceImpl implements ProveedorService {
             );
         }
 
-        proveedor.setNombreProveedor(dto.getNombreProveedor());
-        proveedor.setCorreo(dto.getCorreo());
-        proveedor.setTelefono(dto.getTelefono());
-        proveedor.setDireccion(dto.getDireccion());
+        if(dto.getNombreProveedor() != null){
+            proveedor.setNombreProveedor(dto.getNombreProveedor());
+        }
+
+        if(dto.getCorreo() != null){
+            proveedor.setCorreo(dto.getCorreo());
+        }
+
+        if(dto.getTelefono() != null){
+            proveedor.setTelefono(dto.getTelefono());
+        }
+
+        if(dto.getDireccion() != null){
+            proveedor.setDireccion(dto.getDireccion());
+        }
 
         Proveedor actualizado = proveedorRepository.save(proveedor);
 

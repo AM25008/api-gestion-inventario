@@ -1,8 +1,8 @@
 package com.grupo7.GestionInventarioAPI.controller;
 
 import com.grupo7.GestionInventarioAPI.dto.request.ProveedorRequestDTO;
+import com.grupo7.GestionInventarioAPI.dto.request.ProveedorUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProveedorResponseDTO;
-import com.grupo7.GestionInventarioAPI.exception.AccesoNoAutorizadoException;
 import com.grupo7.GestionInventarioAPI.service.ProveedorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ public class ProveedorController {
 
     private final ProveedorService proveedorService;
 
+    /*
     private void validarRol(String rol, boolean soloAdmin) {
         if (rol == null) {
             throw new AccesoNoAutorizadoException(
@@ -38,24 +39,15 @@ public class ProveedorController {
                     "El rol debe ser ADMIN u OPERADOR."
             );
         }
-    }
+    }*/
 
     @GetMapping
-    public ResponseEntity<List<ProveedorResponseDTO>> listar(
-            @RequestHeader(value = "Rol-Usuario", required = false)
-            String rolUsuario
-    ) {
-        validarRol(rolUsuario, false);
+    public ResponseEntity<List<ProveedorResponseDTO>> listar(String rolUsuario) {
         return ResponseEntity.ok(proveedorService.listarActivos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProveedorResponseDTO> obtenerPorId(
-            @PathVariable Integer id,
-            @RequestHeader(value = "Rol-Usuario", required = false)
-            String rolUsuario
-    ) {
-        validarRol(rolUsuario, false);
+    public ResponseEntity<ProveedorResponseDTO> obtenerPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(proveedorService.obtenerPorId(id));
     }
 
@@ -72,7 +64,7 @@ public class ProveedorController {
     @PutMapping("/{id}")
     public ResponseEntity<ProveedorResponseDTO> actualizar(
             @PathVariable Integer id,
-            @Valid @RequestBody ProveedorRequestDTO dto,
+            @Valid @RequestBody ProveedorUpdateDTO dto,
             @RequestParam Integer user
     ) {
         return ResponseEntity.ok(

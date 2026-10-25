@@ -1,6 +1,7 @@
 package com.grupo7.GestionInventarioAPI.service;
 
 import com.grupo7.GestionInventarioAPI.dto.request.ProveedorRequestDTO;
+import com.grupo7.GestionInventarioAPI.dto.request.ProveedorUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProveedorResponseDTO;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface ProveedorService {
 
     ProveedorResponseDTO actualizar(
             Integer id,
-            ProveedorRequestDTO dto,
+            ProveedorUpdateDTO dto,
             Integer usuarioId
     );
 
