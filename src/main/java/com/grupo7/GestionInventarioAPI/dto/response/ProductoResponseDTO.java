@@ -4,6 +4,7 @@ import com.grupo7.GestionInventarioAPI.model.enums.NivelStock;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +22,5 @@ public class ProductoResponseDTO {
     private Integer stockMinimo;
 
     private NivelStock nivelStock;
+    private List<String> proveedores; //lista de proveedores
 }

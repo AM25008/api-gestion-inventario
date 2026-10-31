@@ -5,10 +5,9 @@ import com.grupo7.GestionInventarioAPI.dto.request.ProductoUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProductoResponseDTO;
 import com.grupo7.GestionInventarioAPI.exception.RecursoNoEncontradoException;
 import com.grupo7.GestionInventarioAPI.mapper.ProductoMapper;
-import com.grupo7.GestionInventarioAPI.model.Categoria;
-import com.grupo7.GestionInventarioAPI.model.Producto;
-import com.grupo7.GestionInventarioAPI.model.Usuario;
+import com.grupo7.GestionInventarioAPI.model.*;
 import com.grupo7.GestionInventarioAPI.repository.CategoriaRepository;
+import com.grupo7.GestionInventarioAPI.repository.ProductoProveedorRepository;
 import com.grupo7.GestionInventarioAPI.repository.ProductoRepository;
 import com.grupo7.GestionInventarioAPI.service.Helper;
 import com.grupo7.GestionInventarioAPI.service.ProductoService;
@@ -29,13 +28,14 @@ public class ProductoServiceImpl implements ProductoService {
     private final CategoriaRepository categoriaRepository;
     private final ProductoMapper productoMapper;
     private final Helper helper;
+    private final ProductoProveedorRepository productoProveedorRepository;
 
     @Override
     @Transactional(readOnly = true)
     public List<ProductoResponseDTO> listarActivos() {
         return productoRepository.findByActivoTrue()
                 .stream()
-                .map(productoMapper::toDTO)
+                .map(this::convertirAResponse)
                 .collect(Collectors.toList());
     }
 
@@ -44,7 +44,7 @@ public class ProductoServiceImpl implements ProductoService {
     public ProductoResponseDTO obtenerPorId(Integer id) {
         Producto producto = productoRepository.findByIdProductoAndActivoTrue(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado o inactivo con ID: " + id));
-        return productoMapper.toDTO(producto);
+        return convertirAResponse(producto);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setActivo(true);
 
         Producto guardado = productoRepository.save(producto);
-        return productoMapper.toDTO(guardado);
+        return convertirAResponse(guardado);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ProductoServiceImpl implements ProductoService {
         productoMapper.updateEntityFromDTO(dto, producto);
 
         Producto actualizado = productoRepository.save(producto);
-        return productoMapper.toDTO(actualizado);
+        return convertirAResponse(actualizado);
     }
 
     // aqui recibe el usuario y lo valida con el helper
@@ -107,7 +107,24 @@ public class ProductoServiceImpl implements ProductoService {
     public List<ProductoResponseDTO> consultarStockBajo() {
         return productoRepository.findProductosConStockBajo()
                 .stream()
-                .map(productoMapper::toDTO)
+                .map(this::convertirAResponse)
                 .collect(Collectors.toList());
+    }
+
+    private List<String> obtenerProveedoresDeProducto(Integer idProducto){
+
+        List<ProductoProveedor> relaciones = productoProveedorRepository.findByProducto_IdProducto(idProducto);
+
+        return relaciones.stream()
+                .map(ProductoProveedor::getProveedor)
+                .filter(Proveedor::isActivo)
+                .map(Proveedor::getNombreProveedor)
+                .toList();
+    }
+
+    private ProductoResponseDTO convertirAResponse(Producto producto) {
+        List<String> proveedores = obtenerProveedoresDeProducto(producto.getIdProducto());
+
+        return productoMapper.toDTO(producto, proveedores);
     }
 }

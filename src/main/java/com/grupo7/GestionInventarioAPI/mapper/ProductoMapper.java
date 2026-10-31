@@ -3,14 +3,32 @@ package com.grupo7.GestionInventarioAPI.mapper;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProductoResponseDTO;
+import com.grupo7.GestionInventarioAPI.exception.RecursoNoEncontradoException;
 import com.grupo7.GestionInventarioAPI.model.Categoria;
 import com.grupo7.GestionInventarioAPI.model.Producto;
+import com.grupo7.GestionInventarioAPI.model.ProductoProveedor;
+import com.grupo7.GestionInventarioAPI.model.Proveedor;
 import com.grupo7.GestionInventarioAPI.model.enums.NivelStock;
+import com.grupo7.GestionInventarioAPI.repository.ProductoProveedorRepository;
+import com.grupo7.GestionInventarioAPI.repository.ProductoRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 
 public class ProductoMapper {
+
+    private final ProductoRepository productoRepository;
+    private final ProductoProveedorRepository productoProveedorRepository;
+
+    public ProductoMapper(
+            ProductoRepository productoRepository,
+            ProductoProveedorRepository productoProveedorRepository
+    ) {
+        this.productoRepository = productoRepository;
+        this.productoProveedorRepository = productoProveedorRepository;
+    }
 
     public Producto toEntity(ProductoRequestDTO dto, Categoria categoria){
         if(dto == null) return null;
@@ -31,7 +49,7 @@ public class ProductoMapper {
         return producto;
     }
 
-    public ProductoResponseDTO toDTO(Producto entity){
+    public ProductoResponseDTO toDTO(Producto entity, List<String> proveedores){
         if(entity == null) return null;
 
         return ProductoResponseDTO.builder()
@@ -43,6 +61,7 @@ public class ProductoMapper {
                 .stock(entity.getStockActual())
                 .stockMinimo(entity.getStockMinimo())
                 .nivelStock(calcularNivelStock(entity.getStockActual(), entity.getStockMinimo()))
+                .proveedores(proveedores)
                 .build();
     }
 

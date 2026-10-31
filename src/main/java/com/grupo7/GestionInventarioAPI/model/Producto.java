@@ -1,10 +1,10 @@
 package com.grupo7.GestionInventarioAPI.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "productos")
@@ -45,5 +45,14 @@ public class Producto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
+
+    // Lista de proveedores
+    @ManyToMany
+    @JoinTable(
+            name = "producto_proveedor",
+            joinColumns = @JoinColumn(name = "id_producto"),
+            inverseJoinColumns = @JoinColumn(name = "id_proveedor")
+    )
+    private List<Proveedor> proveedores;
 
 }

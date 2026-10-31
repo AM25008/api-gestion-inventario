@@ -50,6 +50,9 @@ INSERT INTO producto_proveedor (id_producto, id_proveedor, precio_compra) VALUES
     (4, 4, 42.00),
     (5, 5, 12.00);
 
+INSERT INTO usuarios(nombre_usuario, apellido_usuario, rol) VALUES
+    ('Audiel', 'Terán', 'ADMIN');
+
 
 -- ==========================================
 -- DATOS DE PRUEBA: MOVIMIENTOS
