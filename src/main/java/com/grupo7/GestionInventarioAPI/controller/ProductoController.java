@@ -3,7 +3,8 @@ package com.grupo7.GestionInventarioAPI.controller;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProductoResponseDTO;
-import com.grupo7.GestionInventarioAPI.service.impl.ProductoServiceImpl;
+import com.grupo7.GestionInventarioAPI.dto.response.ValorInventarioResponseDTO;
+import com.grupo7.GestionInventarioAPI.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductoController {
 
-    private final ProductoServiceImpl productoService;
+    private final ProductoService productoService;
 
     // GET /api/productos
     @Operation(
@@ -52,6 +53,15 @@ public class ProductoController {
     @GetMapping("/stock-bajo")
     public ResponseEntity<List<ProductoResponseDTO>> consultarStockBajo(){
         return ResponseEntity.ok(productoService.consultarStockBajo());
+    }
+
+    @Operation(
+            summary = "Calcular el valor total del inventario",
+            description = "Suma el precio por el stock actual de todos los productos activos"
+    )
+    @GetMapping("/valor-inventario")
+    public ResponseEntity<ValorInventarioResponseDTO> calcularValorTotalInventario(){
+        return ResponseEntity.ok(productoService.calcularValorTotalInventario());
     }
 
     // POST /api/productos

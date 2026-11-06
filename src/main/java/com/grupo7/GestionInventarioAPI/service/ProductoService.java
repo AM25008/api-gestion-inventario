@@ -3,6 +3,7 @@ package com.grupo7.GestionInventarioAPI.service;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProductoResponseDTO;
+import com.grupo7.GestionInventarioAPI.dto.response.ValorInventarioResponseDTO;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface ProductoService {
     void eliminar(Integer idProducto, Integer idUsuario);
 
     List<ProductoResponseDTO> consultarStockBajo();
+
+    ValorInventarioResponseDTO calcularValorTotalInventario();
 }
