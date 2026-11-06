@@ -1,6 +1,7 @@
 package com.grupo7.GestionInventarioAPI.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Builder
+@AllArgsConstructor
 @JsonPropertyOrder({
         "idProductoProveedor",
         "producto",
