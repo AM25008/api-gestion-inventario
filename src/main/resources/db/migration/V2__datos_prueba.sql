@@ -1,8 +1,6 @@
 -- ==========================================
 -- DATOS DE PRUEBA: CATEGORIAS
 -- ==========================================
-
-
 INSERT INTO categorias (nombre_categoria, descripcion, activa) VALUES
     ('Computadoras', 'Equipos de computo y portatiles', TRUE),
     ('Perifericos', 'Teclados, ratones y accesorios', TRUE),
@@ -13,7 +11,6 @@ INSERT INTO categorias (nombre_categoria, descripcion, activa) VALUES
 -- ==========================================
 -- DATOS DE PRUEBA: PROVEEDORES
 -- ==========================================
-
 INSERT INTO proveedores (
     nombre_proveedor, correo, telefono, direccion, activo
 ) VALUES
@@ -27,7 +24,6 @@ INSERT INTO proveedores (
 -- ==========================================
 -- DATOS DE PRUEBA: PRODUCTOS
 -- ==========================================
-
 INSERT INTO productos (
     id_categoria, nombre_producto, descripcion,
     precio, stock_actual, stock_minimo, activo
@@ -38,11 +34,15 @@ INSERT INTO productos (
     (4, 'Router WiFi', 'Router inalambrico de doble banda', 60.00, 10, 3, TRUE),
     (5, 'Mouse inalambrico', 'Mouse USB con conexion inalambrica', 18.99, 2, 4, TRUE);
 
+-- ==========================================
+-- DATOS DE PRUEBA: USUARIOS
+-- ==========================================
+INSERT INTO usuarios(nombre_usuario, apellido_usuario, rol) VALUES
+('Audiel', 'Terán', 'ADMIN');
 
 -- ==========================================
 -- DATOS DE PRUEBA: PRODUCTO_PROVEEDOR
 -- ==========================================
-
 INSERT INTO producto_proveedor (id_producto, id_proveedor, precio_compra) VALUES
     (1, 1, 620.00),
     (2, 2, 32.00),
@@ -54,7 +54,6 @@ INSERT INTO producto_proveedor (id_producto, id_proveedor, precio_compra) VALUES
 -- ==========================================
 -- DATOS DE PRUEBA: MOVIMIENTOS
 -- ==========================================
-
 INSERT INTO movimientos (
     id_producto, id_usuario, tipo_movimiento,
     fecha_hora, cantidad, motivo

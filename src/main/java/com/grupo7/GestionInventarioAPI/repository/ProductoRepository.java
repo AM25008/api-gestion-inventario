@@ -1,8 +1,10 @@
 package com.grupo7.GestionInventarioAPI.repository;
 
+import com.grupo7.GestionInventarioAPI.dto.response.ValorInventarioResponseDTO;
 import com.grupo7.GestionInventarioAPI.model.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +17,15 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer>{
 
     List<Producto> findByNombreProductoContainingIgnoreCaseAndActivoTrue(String nombreProducto);
     @Query("SELECT  p FROM Producto p WHERE p.activo = true AND p.stockActual <= p.stockMinimo") List<Producto> findProductosConStockBajo();
+
+    @Query("""
+            SELECT new com.grupo7.GestionInventarioAPI.dto.response.ValorInventarioResponseDTO(
+                SUM(p.precio * p.stockActual),
+                COUNT(p),
+                SUM(p.stockActual)
+            )
+            FROM Producto p
+            WHERE p.activo = true
+            """)
+    Optional<ValorInventarioResponseDTO> calcularValorTotalInventario();
 }

@@ -3,6 +3,7 @@ package com.grupo7.GestionInventarioAPI.service.impl;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoUpdateDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.ProductoResponseDTO;
+import com.grupo7.GestionInventarioAPI.dto.response.ValorInventarioResponseDTO;
 import com.grupo7.GestionInventarioAPI.exception.RecursoNoEncontradoException;
 import com.grupo7.GestionInventarioAPI.mapper.ProductoMapper;
 import com.grupo7.GestionInventarioAPI.model.Categoria;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.grupo7.GestionInventarioAPI.exception.RecursoDuplicadoException;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -109,5 +111,17 @@ public class ProductoServiceImpl implements ProductoService {
                 .stream()
                 .map(productoMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ValorInventarioResponseDTO calcularValorTotalInventario() {
+        return productoRepository.calcularValorTotalInventario()
+                .map(resumen -> new ValorInventarioResponseDTO(
+                        resumen.getValorTotal() != null ? resumen.getValorTotal() : BigDecimal.ZERO,
+                        resumen.getCantidadProductos() != null ? resumen.getCantidadProductos() : 0L,
+                        resumen.getUnidadesTotales() != null ? resumen.getUnidadesTotales() : 0L
+                ))
+                .orElseGet(() -> new ValorInventarioResponseDTO(BigDecimal.ZERO, 0L, 0L));
     }
 }
