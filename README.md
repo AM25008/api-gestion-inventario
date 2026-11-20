@@ -1,4 +1,13 @@
 # API Gestión de Inventarios
+[![Java](https://img.shields.io/badge/Java-ED8B00.svg?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![SpringBoot](https://img.shields.io/badge/SpringBoot-6DB33F.svg?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED.svg?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5.svg?logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Swagger](https://img.shields.io/badge/Swagger-85EA2D.svg?logo=swagger&logoColor=black)](https://swagger.io/)
+[![Actions](https://img.shields.io/badge/GitHubActions-2088FF.svg?logo=githubactions&logoColor=white)](https://github.com/features/actions)
+[![Contributors](https://img.shields.io/github/contributors/am25008/api-gestion-inventario.svg)](https://github.com/am25008/api-gestion-inventario/graphs/contributors)
+
 > Proyecto Final de Programación Orientada a Objetos - Grupo 7
 
 API REST desarrollada con Spring Boot para administrar el catálogo de productos de un negocio, sus categorías y proveedores, y registra cada entrada y salida
@@ -39,7 +48,6 @@ El sistema permite llevar el control del inventario de una organización:
 | Asociación producto-proveedor | Consultar, crear, actualizar, eliminar | Consultar, crear, actualizar |
 | Usuarios | Todo | Sin acceso |
 | Movimientos de inventario | Registrar y consultar | Registrar y consultar |
-> El sistema **no implementa login ni sesiones**. Las operaciones que modifican datos reciben el id del usuario que las ejecuta en el parámetro `user`; el sistema comprueba que exista, que esté activo y que su rol permita la operación.
 
 ## Estructura del proyecto
 ```
@@ -47,7 +55,9 @@ api-gestion-inventario/
 ├── docs/                              # Documentación adicional (diagramas, casos de uso)
 │   ├── Casos de Uso/
 │   ├── Diagrama de Clases UML/
-│   └── Diagrama Entidad-Relación/
+│   ├── Diagrama Entidad-Relación/
+│   ├── Evidencias/                    # Capturas del despliegue y del pipeline
+│   └── Postman/                       # Colección para probar los endpoints
 │
 ├── src/
 │   ├── main/
@@ -66,10 +76,22 @@ api-gestion-inventario/
 │   │   └── resources/
 │   │       ├── db/migration/          # Scripts SQL de Flyway
 │   │       └── application.properties
-│   └── test/                          # Pruebas unitarias (en desarrollo)
+│   └── test/                          # Pruebas unitarias
 │
-├── docker-compose.yml                 # Configuración del contenedor
+├── .github/
+│   └── workflows/ci.yml               # Pipeline de integración continua
+|
+├── k8s/                               # Manifiestos para Kubernetes
+│   ├── 01-postgres-secret.yaml
+│   ├── 02-postgres-service.yaml
+│   ├── 03-postgres-deployment.yaml
+│   ├── 04-deployment.yaml
+│   └── 05-service.yaml
+├── Dockerfile                         # Construcción de la imagen de la API
+├── docker-compose.yml                 # API y base de datos con Docker Compose
+├── Deploy.md                          # Guía de despliegue en Kubernetes y uso de act
 ├── pom.xml                            # Gestión de dependencias
+├── .dockerignore                      # Archivos excluidos de la imagen Docker
 ├── .gitignore                         # Archivos y directorios ignorados por Git
 └── README.md                          # Documentación principal
 ```
@@ -137,9 +159,19 @@ El parámetro `user` es el id del usuario que ejecuta la operación. Es obligato
 | GET | `/api/productos` | Listar productos activos | Ambos |
 | GET | `/api/productos/{id}` | Obtener un producto | Ambos |
 | GET | `/api/productos/stock-bajo` | Productos con stock menor o igual al mínimo | Ambos |
+| GET | `/api/productos/valor-inventario` | Calcular el valor total del inventario activo y consultar la cantidad de productos y unidades | Ambos |
 | POST | `/api/productos?user=` | Crear producto | Ambos |
 | PUT | `/api/productos/{id}?user=` | Actualizar producto (no modifica el stock) | Ambos |
 | DELETE | `/api/productos/{id}?user=` | Dar de baja un producto | Administrador |
+
+La respuesta de `/api/productos/valor-inventario` contiene el valor total del inventario, la cantidad de productos activos y las unidades totales. Por ejemplo:
+```json
+{
+  "valorTotal": 1250.50,
+  "cantidadProductos": 8,
+  "unidadesTotales": 42
+}
+```
 
 ### Asociación producto-proveedor - `/api/producto-proveedor`
 | Método | Ruta | Descripción | Permiso |
@@ -175,11 +207,16 @@ El parámetro `user` es el id del usuario que ejecuta la operación. Es obligato
 | PUT | `/api/usuarios/{id}` | Actualizar usuario |
 | DELETE | `/api/usuarios/{id}` | Desactivar usuario |
 
+### Swagger / OpenAPI
+La documentación interactiva de los endpoints está disponible en el siguiente enlace (la aplicación se debe estar ejecutando):
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+- Especificación OpenAPI: `http://localhost:8080/v3/api-docs`
+
 ## Instalación y Configuración
 ### Requisitos
-- Java 21
-- Docker
-- Git y GitHub
+- Docker Desktop con Docker Compose, o Docker Engine con el complemento Docker Compose
+
+> Docker es el único requisito para ejecutar la API y la base de datos en contenedores. Para ejecutar la API directamente con Java, también se necesita Java 21.
 
 ### 1. Clonar el repositorio
 ```bash
@@ -187,12 +224,14 @@ git clone https://github.com/AM25008/api-gestion-inventario.git
 cd api-gestion-inventario
 ```
 
-### 2. Levantar la base de datos
+### 2. Ejecutar la aplicación con Docker
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
-Esto crea un contenedor de PostgreSQL con estos datos:
+Este comando construye la imagen de la API e inicia los contenedores de la API y PostgreSQL. La API queda disponible en `http://localhost:8080/api`.
+
+La configuración de PostgreSQL es:
 | Dato | Valor |
 |---|---|
 | Host | `localhost` |
@@ -202,21 +241,33 @@ Esto crea un contenedor de PostgreSQL con estos datos:
 | Contraseña | `proyecto_poo` |
 
 >[!NOTE]
-> - Si se quiere visualizar la base de datos (pgAdmin, DBeaver, etc) se debe registrar una conexión con las credenciales anteriores
+> - Para visualizar la base de datos con pgAdmin, DBeaver u otra herramienta, se puede registrar una conexión con las credenciales anteriores.
+> - Para detener los contenedores, ejecutar `docker compose stop`.
+> - Para eliminar los contenedores (y el volúmen), ejecurar `docker compose down -v`
 
-### 3. Ejecutar la aplicación
+### 3. Ejecutar la aplicación con Java
+Esta alternativa requiere Docker para iniciar PostgreSQL y Java 21 para ejecutar Spring Boot.
 
+Primero, iniciar únicamente la base de datos:
 ```bash
-./mvnw spring-boot:run
+docker compose up -d database
 ```
 
-URL de la API: `http://localhost:8080/api`.
+Luego, ejecutar la API desde la raíz del proyecto. En Windows:
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+La API queda disponible en `http://localhost:8080/api`
 
 ### 4. Migraciones de la base de datos (Flyway)
-Flyway aplica automáticamente las migraciones de `src/main/resources/db/migration/`, que crean las tablas y algunos datos iniciales de ejemplo.
+Flyway aplica automáticamente las migraciones de `src/main/resources/db/migration/`, que crean las tablas y algunos datos iniciales de ejemplo al iniciar la aplicación.
 
 ### 5. Probar con Postman
-En la carpeta `docs/Postman` se encuentra un archivo json que puede ser importado en postman para probar las peticiones
+En la carpeta `docs/Postman` se encuentra una colección JSON que puede importarse en Postman para probar las peticiones.
+
+## Despliegue en Kubernetes
+La guía de despliegue local en Kubernetes con `kind`, así como las instrucciones para ejecutar el pipeline localmente con `act`, se encuentran en [Deploy.md](Deploy.md).
 
 ## Stack Tecnológico
 | Tecnología | Uso |
@@ -226,8 +277,9 @@ En la carpeta `docs/Postman` se encuentra un archivo json que puede ser importad
 | PostgreSQL 16 | Base de datos |
 | Flyway | Migraciones versionadas del esquema |
 | Jakarta Validation | Validación de DTOs |
+| Springdoc OpenAPI | Documentación interactiva de la API con Swagger UI |
 | Lombok | Utilidades |
-| Docker | Contenerización de la base de datos |
+| Docker Compose | Ejecución de la API y PostgreSQL en contenedores |
 | Maven | Gestión de dependencias |
 
 ## Licencia
