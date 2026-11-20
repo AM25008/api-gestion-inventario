@@ -107,6 +107,9 @@ La primera vez, selecciona la imagen **Medium** cuando `act` lo solicite. El wor
 - **Prueba con curl**
 ![](docs/Evidencias/04-prueba-curl.png)
 
+- **Prueba desde el navegador**
+![](docs/Evidencias/07-prueba-navegador.png)
+
 ### Ejecucion del pipeline en local con `act`
 ![](docs/Evidencias/05-ejecucion-pipeline.png)
 ![](docs/Evidencias/06-pipeline-completado.png)
