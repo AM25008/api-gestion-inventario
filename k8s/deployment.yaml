@@ -12,20 +12,34 @@ spec:
       labels:
         app: inventario-api
     spec:
-      imagePullSecrets:
-        - name: ghcr-secret
+      initContainers:
+        - name: esperar-postgres
+          image: postgres:16-alpine
+          command:
+            - sh
+            - -c
+            - until pg_isready -h postgres-service -p 5432 -U postgres; do echo "Esperando a PostgreSQL..."; sleep 2; done
       containers:
         - name: inventario-api
           image: ghcr.io/am25008/api-gestion-inventario:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "k8s"
-            - name: SPRING_FLYWAY_ENABLED
-              value: "false"
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:h2:mem:testdb"
+              value: "jdbc:postgresql://postgres-service:5432/db_inventario"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_FLYWAY_ENABLED
+              value: "true"
           resources:
             limits:
               memory: "1024Mi"
