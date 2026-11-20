@@ -17,7 +17,7 @@ import java.util.List;
 
 @Tag(name = "3. Productos", description = "Operaciones para la gestión de los productos del inventario")
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/productos")//ENDPOINTS
 @RequiredArgsConstructor
 public class ProductoController {
 

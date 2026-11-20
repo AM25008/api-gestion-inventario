@@ -232,3 +232,8 @@ En la carpeta `docs/Postman` se encuentra un archivo json que puede ser importad
 
 ## Licencia
 Proyecto académico - Universidad de El Salvador, Facultad Multidisciplinaria de Occidente.
+
+
+
+
+

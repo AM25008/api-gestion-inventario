@@ -1,4 +1,4 @@
-package com.grupo7.GestionInventarioAPI.service;
+package com.grupo7.GestionInventarioAPI.service.impl;
 
 import com.grupo7.GestionInventarioAPI.dto.request.MovimientoInventarioRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.MovimientoInventarioResponseDTO;
@@ -13,7 +13,7 @@ import com.grupo7.GestionInventarioAPI.model.enums.TipoMovimiento;
 import com.grupo7.GestionInventarioAPI.repository.MovimientoInventarioRepository;
 import com.grupo7.GestionInventarioAPI.repository.ProductoRepository;
 import com.grupo7.GestionInventarioAPI.repository.UsuarioRepository;
-import com.grupo7.GestionInventarioAPI.service.impl.MovimientoInventarioServiceImpl;
+import com.grupo7.GestionInventarioAPI.service.Helper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,6 @@
 package com.grupo7.GestionInventarioAPI.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
