@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "7eebc794-2c3b-4496-8c94-792fde55154b",
+    "_postman_id": "944d266a-dede-4399-a5d6-8b0695390ea6",
     "name": "API Gestión Inventario",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "45617736",
-    "_collection_link": "https://go.postman.co/collection/45617736-7eebc794-2c3b-4496-8c94-792fde55154b?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/45617736-944d266a-dede-4399-a5d6-8b0695390ea6?source=collection_link"
   },
   "item": [
     {
@@ -226,10 +226,6 @@
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
-            },
             "url": {
               "raw": "http://localhost:8080/api/proveedores/1",
               "protocol": "http",
@@ -682,7 +678,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/productos/4",
+              "raw": "http://localhost:8080/api/productos/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -691,7 +687,7 @@
               "path": [
                 "api",
                 "productos",
-                "4"
+                "1"
               ]
             }
           },
@@ -728,7 +724,7 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "Eliminar",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -753,6 +749,48 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Stock bajo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/productos/stock-bajo",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "productos",
+                "stock-bajo"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Calcular valor inventario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/productos/valor-inventario",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "productos",
+                "valor-inventario"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -766,7 +804,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"idProducto\": 6,\r\n    \"idProveedor\": 4,\r\n    \"precioCompra\": 120.00\r\n}",
+              "raw": "{\r\n    \"idProducto\": 1,\r\n    \"idProveedor\": 4,\r\n    \"precioCompra\": 120.00\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -912,7 +950,7 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "Eliminar",
           "request": {
             "method": "DELETE",
             "header": [],
