@@ -269,6 +269,21 @@ En la carpeta `docs/Postman` se encuentra una colección JSON que puede importar
 ## Despliegue en Kubernetes
 La guía de despliegue local en Kubernetes con `kind`, así como las instrucciones para ejecutar el pipeline localmente con `act`, se encuentran en [Deploy.md](Deploy.md).
 
+## Ejecutar las pruebas
+
+### Con Docker
+Desde la raiz del proyecto ejecutar el siguiente comando
+```shell
+docker run --rm -v "${PWD}:/app" -w /app maven:3.9-eclipse-temurin-21 mvn test
+```
+> Esto crea un contenedor temporal con Maven y Java 21, ejecuta las pruebas y lo elimina al finalizar.
+
+### Con Java
+Requiere Java 21 y Maven instalado. Desde la raíz del proyecto, ejecutar:
+```bash
+mvn test
+```
+
 ## Stack Tecnológico
 | Tecnología | Uso |
 |---|---|
