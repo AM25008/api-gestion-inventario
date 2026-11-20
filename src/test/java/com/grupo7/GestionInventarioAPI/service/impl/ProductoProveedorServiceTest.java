@@ -1,4 +1,4 @@
-package com.grupo7.GestionInventarioAPI.service;
+package com.grupo7.GestionInventarioAPI.service.impl;
 
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoProveedorRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.request.ProductoProveedorUpdateDTO;
@@ -11,7 +11,7 @@ import com.grupo7.GestionInventarioAPI.model.enums.RolUsuario;
 import com.grupo7.GestionInventarioAPI.repository.ProductoProveedorRepository;
 import com.grupo7.GestionInventarioAPI.repository.ProductoRepository;
 import com.grupo7.GestionInventarioAPI.repository.ProveedorRepository;
-import com.grupo7.GestionInventarioAPI.service.impl.ProductoProveedorServiceImpl;
+import com.grupo7.GestionInventarioAPI.service.Helper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
