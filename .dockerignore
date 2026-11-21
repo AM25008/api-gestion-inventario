@@ -1,0 +1,19 @@
+# Excluir del contexto de Docker
+.git/
+
+# Evitar enviar artefactos generados al daemon de Docker
+target/
+**/target/
+
+# No enviar configuracion local ni registros
+.env
+.env.*
+*.log
+logs/
+
+# Archivos que no forman parte de la construccion de la API
+.github/
+docs/
+k8s/
+docker-compose.yml
+*.md

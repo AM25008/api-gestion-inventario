@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventario-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventario-api
+  template:
+    metadata:
+      labels:
+        app: inventario-api
+    spec:
+      initContainers:
+        - name: esperar-postgres
+          image: postgres:16-alpine
+          command:
+            - sh
+            - -c
+            - until pg_isready -h postgres-service -p 5432 -U postgres; do echo "Esperando a PostgreSQL..."; sleep 2; done
+      containers:
+        - name: inventario-api
+          image: api-gestion-inventario:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /api/categorias
+              port: 8080
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 24
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres-service:5432/db_inventario"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_FLYWAY_ENABLED
+              value: "true"
+          resources:
+            limits:
+              memory: "1024Mi"
+            requests:
+              memory: "512Mi"

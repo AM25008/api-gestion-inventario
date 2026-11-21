@@ -54,6 +54,5 @@ CREATE TABLE movimientos(
         tipo_movimiento VARCHAR(20) NOT NULL CHECK(tipo_movimiento IN ('ENTRADA', 'SALIDA')),
         fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         cantidad INTEGER NOT NULL CHECK(cantidad > 0),
-        precio_unitario DECIMAL(10,2) CHECK(precio_unitario >= 0),
 		motivo VARCHAR(200)
 );

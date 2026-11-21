@@ -3,7 +3,6 @@ package com.grupo7.GestionInventarioAPI.service;
 
 import com.grupo7.GestionInventarioAPI.dto.request.MovimientoInventarioRequestDTO;
 import com.grupo7.GestionInventarioAPI.dto.response.MovimientoInventarioResponseDTO;
-import com.grupo7.GestionInventarioAPI.model.Producto;
 import com.grupo7.GestionInventarioAPI.model.enums.TipoMovimiento;
 
 import java.util.List;

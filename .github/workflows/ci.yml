@@ -1,0 +1,101 @@
+name: CI/CD Pipeline Inventario
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Correr pruebas unitarias
+        run: chmod +x mvnw && ./mvnw test
+
+      - name: Construir imagen Docker
+        run: |
+          docker build \
+            -t api-gestion-inventario:latest \
+            -t ghcr.io/am25008/api-gestion-inventario:${{ github.sha }} \
+            -t ghcr.io/am25008/api-gestion-inventario:latest \
+            .
+
+      - name: Instalar kind
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+
+      - name: Instalar kubectl
+        run: |
+          curl -LO https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/kubectl
+
+      - name: Crear cluster Kubernetes temporal
+        run: kind create cluster --name inventario --wait 120s
+
+      - name: Cargar imagen en kind
+        run: kind load docker-image api-gestion-inventario:latest --name inventario
+
+      - name: Desplegar manifiestos
+        run: kubectl apply -f k8s/
+
+      - name: Esperar PostgreSQL
+        run: kubectl rollout status deployment/postgres --timeout=120s
+
+      - name: Esperar API
+        run: kubectl rollout status deployment/inventario-api --timeout=240s
+
+      - name: Verificar endpoint de la API
+        run: |
+          kubectl port-forward service/inventario-service 8080:8080 >/tmp/inventario-port-forward.log 2>&1 &
+          PORT_FORWARD_PID=$!
+          trap 'kill "$PORT_FORWARD_PID" 2>/dev/null || true' EXIT
+
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8080/api/categorias >/dev/null; then
+              echo "La API respondió correctamente."
+              exit 0
+            fi
+            sleep 2
+          done
+
+          cat /tmp/inventario-port-forward.log
+          exit 1
+
+      - name: Login en GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publicar imagen en GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker push ghcr.io/am25008/api-gestion-inventario:${{ github.sha }}
+          docker push ghcr.io/am25008/api-gestion-inventario:latest
+
+      - name: Limpiar cluster kind
+        if: always()
+        run: |
+          if command -v kind >/dev/null 2>&1 && kind get clusters | grep -qx inventario; then
+            kind delete cluster --name inventario
+          fi
