@@ -209,8 +209,7 @@ La respuesta de `/api/productos/valor-inventario` contiene el valor total del in
 
 ### Swagger / OpenAPI
 La documentación interactiva de los endpoints está disponible en el siguiente enlace (la aplicación se debe estar ejecutando):
-- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
-- Especificación OpenAPI: `http://localhost:8080/v3/api-docs`
+- Swagger UI: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html#/)
 
 ## Instalación y Configuración
 ### Requisitos
@@ -255,7 +254,7 @@ docker compose up -d database
 
 Luego, ejecutar la API desde la raíz del proyecto. En Windows:
 ```powershell
-.\mvnw.cmd spring-boot:run
+./mvnw spring-boot:run
 ```
 
 La API queda disponible en `http://localhost:8080/api`
